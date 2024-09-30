@@ -1,5 +1,5 @@
 class ListCarInfo {
-  bool? success;
+  dynamic success;
   String? msg;
   int? code;
   DataCar? data;

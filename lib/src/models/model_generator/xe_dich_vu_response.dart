@@ -1,6 +1,6 @@
 class XeDichVuResponse {
   DataXeDichVuResponse? data;
-  bool? success;
+  dynamic success;
   int? code;
   String? msg;
 

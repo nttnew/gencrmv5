@@ -1,5 +1,5 @@
 class PdfResponse {
-  bool? success;
+  dynamic success;
   String? msg;
   int? code;
   Data? data;

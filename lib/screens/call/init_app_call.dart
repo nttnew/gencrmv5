@@ -46,6 +46,7 @@ class _InitCallAppState extends ConsumerState<InitCallApp>
   }
 
   _init() async {
+    // NotificationHandler.init(); //todo
     await LoginBloc.of(context).getDataCall();
     _sipInfo.add(await getSipInfo());
     await _registerCall();
@@ -124,7 +125,7 @@ class _InitCallAppState extends ConsumerState<InitCallApp>
       String? title = await prefs.getString(PreferencesKey.LOGOUT_STATUS);
       print('fuck---------$title');
       if (title == LOGOUT_NOTIFICATION) {
-        logoutNotification();
+        logoutAllApp();
         await prefs.setString(PreferencesKey.LOGOUT_STATUS, '');
       }
       super.didChangeAppLifecycleState(state);

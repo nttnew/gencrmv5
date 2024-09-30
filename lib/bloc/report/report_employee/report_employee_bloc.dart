@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/l10n/key_text.dart';
 import '../../../api_resfull/user_repository.dart';
-import '../../../src/app_const.dart';
 import '../../../src/base.dart';
 import '../../../src/models/model_generator/report_contact.dart';
 import '../../../src/models/model_generator/report_employee.dart';
@@ -43,8 +42,6 @@ class ReportEmployeeBloc
           await userRepository.reportEmployee(time!, diemBan, timeFrom, timeTo);
       if (isSuccess(response.code)) {
         yield SuccessReportEmployeeState(response.data?.list ?? []);
-      } else if (isFail(response.code)) {
-        loginSessionExpired();
       } else {
         Loading().popLoading();
         yield ErrorReportEmployeeState(response.msg ?? '');

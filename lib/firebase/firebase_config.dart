@@ -40,21 +40,19 @@ class FirebaseConfig {
 
   static void getInitialMessage(BuildContext context) {
     FirebaseMessaging.instance.getInitialMessage().then((value) {
-      print('getInitialMessage');
       _handelNotification(value);
     });
   }
 
   static void receiveFromBackgroundState(BuildContext context) {
     FirebaseMessaging.onMessageOpenedApp.listen((value) async {
-      print('onMessageOpenedApp');
       _handelNotification(value);
     });
   }
 
   static _handelNotification(RemoteMessage? value, {bool isElse = true}) {
     if (value?.notification?.title == LOGOUT_NOTIFICATION) {
-      logoutNotification();
+      logoutAllApp();
     } else {
       if (isElse) AppNavigator.navigateNotification();
     }
@@ -76,7 +74,6 @@ class FirebaseConfig {
             body: notification.body ?? '',
           ),
         );
-        print('onMessage');
         _handelNotification(message, isElse: false);
       }
     });
@@ -97,9 +94,9 @@ class FirebaseConfig {
     return token;
   }
 
-  // static Future<void> deleteTokenFcm() async {
-  //   await FirebaseMessaging.instance.deleteToken();
-  // }
+  static Future<void> deleteTokenFcm() async {
+    await FirebaseMessaging.instance.deleteToken();
+  }
 
   static Future<void> initFireBase() async {
     await Firebase.initializeApp(
@@ -111,14 +108,12 @@ class FirebaseConfig {
 @pragma('vm:entry-point')
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   PushNotifAndroid.handleNotification(message);
-  print(
-      'firebaseMessagingBackgroundHandler---------${message.notification?.title ?? ''}');
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   await prefs.setString(
       PreferencesKey.LOGOUT_STATUS, message.notification?.title ?? '');
 }
 
-logoutNotification() {
+logoutAllApp() {
   AppNavigator.navigateLogout();
   AuthenticationBloc.of(Get.context!).add(
     AuthenticationLogoutRequested(),
@@ -154,7 +149,7 @@ enum TypeEvent {
   COLLABORATOR_UPDATE
 }
 
-class NotificationHandler {
+class NotificationHandler { //todo chưa done
   static const MethodChannel _channel =
       MethodChannel('com.yourapp/notifications');
 

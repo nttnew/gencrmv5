@@ -1,5 +1,5 @@
 class ProductsResponse {
-  bool? success;
+  dynamic success;
   String? msg;
   int? code;
   DataProductsResponse? data;

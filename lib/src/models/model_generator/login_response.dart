@@ -107,8 +107,8 @@ class InfoSetupCallCenterRes {
   });
 
   factory InfoSetupCallCenterRes.fromJson(Map<String, dynamic> json) =>
-      _$InfoSetupCallcenterResFromJson(json);
-  Map<String, dynamic> toJson() => _$InfoSetupCallcenterResToJson(this);
+      _$InfoSetupCallCenterResFromJson(json);
+  Map<String, dynamic> toJson() => _$InfoSetupCallCenterResToJson(this);
 }
 
 @JsonSerializable()

@@ -5,7 +5,6 @@ import 'package:gen_crm/src/models/model_generator/detail_customer.dart';
 import 'package:gen_crm/widgets/loading_api.dart';
 import '../../api_resfull/user_repository.dart';
 import '../../l10n/key_text.dart';
-import '../../src/app_const.dart';
 import '../../src/base.dart';
 import '../../src/models/model_generator/customer.dart';
 import '../../widgets/listview/list_load_infinity.dart';
@@ -74,8 +73,6 @@ class DetailCustomerBloc
           response.data?.customer_info ?? [],
           response.data!.customer_note!,
         );
-      } else if (isFail(response.code)) {
-        loginSessionExpired();
       } else {
         yield ErrorGetDetailCustomerState(response.msg ?? '');
       }
@@ -94,8 +91,6 @@ class DetailCustomerBloc
       });
       if (isSuccess(response.code)) {
         yield SuccessDeleteCustomerState();
-      } else if (isFail(response.code)) {
-        loginSessionExpired();
       } else {
         yield ErrorDeleteCustomerState(response.msg ?? '');
       }
@@ -114,8 +109,6 @@ class DetailCustomerBloc
       final response = await userRepository.getClueCustomer(id, page);
       if (isSuccess(response.code)) {
         return response.data ?? [];
-      } else if (isFail(response.code)) {
-        loginSessionExpired();
       } else {
         return response.msg ?? '';
       }
@@ -132,8 +125,6 @@ class DetailCustomerBloc
       final response = await userRepository.getChanceCustomer(id, page);
       if (isSuccess(response.code)) {
         return response.data ?? [];
-      } else if (isFail(response.code)) {
-        loginSessionExpired();
       } else {
         return response.msg ?? '';
       }
@@ -150,8 +141,6 @@ class DetailCustomerBloc
       final response = await userRepository.getContractCustomer(id, page);
       if (isSuccess(response.code)) {
         return response.data ?? [];
-      } else if (isFail(response.code)) {
-        loginSessionExpired();
       } else {
         return response.msg ?? '';
       }
@@ -168,8 +157,6 @@ class DetailCustomerBloc
       final response = await userRepository.getSupportCustomer(id, page);
       if (isSuccess(response.code)) {
         return response.data ?? [];
-      } else if (isFail(response.code)) {
-        loginSessionExpired();
       } else {
         return response.msg ?? '';
       }
@@ -186,8 +173,6 @@ class DetailCustomerBloc
       final response = await userRepository.getJobCustomer(id, page);
       if (isSuccess(response.code)) {
         return response.data ?? [];
-      } else if (isFail(response.code)) {
-        loginSessionExpired();
       } else {
         return response.msg ?? '';
       }

@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/widgets/loading_api.dart';
 import '../../api_resfull/user_repository.dart';
 import '../../l10n/key_text.dart';
-import '../../src/app_const.dart';
 import '../../src/base.dart';
 import '../../src/models/model_generator/detail_customer.dart';
 import '../../widgets/listview/list_load_infinity.dart';
@@ -36,8 +35,6 @@ class GetListDetailChanceBloc
       final response = await userRepository.getListDetailChance(id);
       if (isSuccess(response.code)) {
         yield UpdateGetListDetailChanceState(response.data ?? []);
-      } else if (isFail(response.code)) {
-        loginSessionExpired();
       } else {
         yield ErrorGetListDetailChanceState(response.msg ?? '');
       }
@@ -70,8 +67,6 @@ class GetListDetailChanceBloc
       final response = await userRepository.getJobChance(id, page);
       if (isSuccess(response.code)) {
         return response.data ?? [];
-      } else if (isFail(response.code)) {
-        loginSessionExpired();
       } else {
         return response.msg ?? '';
       }

@@ -1,7 +1,7 @@
 import 'customer.dart';
 
 class QuickCreateResponse {
-  bool? success;
+  dynamic success;
   String? msg;
   int? code;
   DataQuickCreate? data;

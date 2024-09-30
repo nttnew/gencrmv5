@@ -5,7 +5,6 @@ import 'package:gen_crm/src/models/model_generator/response_car_dashboard.dart';
 import 'package:gen_crm/widgets/loading_api.dart';
 import '../../../api_resfull/user_repository.dart';
 import '../../../l10n/key_text.dart';
-import '../../../src/app_const.dart';
 import '../../../src/base.dart';
 
 part 'car_report_event.dart';
@@ -46,8 +45,6 @@ class CarReportBloc extends Bloc<CarReportEvent, CarReportState> {
       );
       if (isSuccess(response.code)) {
         yield SuccessCarReportState(response.data);
-      } else if (isFail(response.code)) {
-        loginSessionExpired();
       } else
         yield ErrorGetListCarReportState(response.msg ?? '');
     } catch (e) {

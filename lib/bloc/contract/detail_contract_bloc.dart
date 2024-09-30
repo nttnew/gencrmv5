@@ -44,8 +44,6 @@ class DetailContractBloc extends Bloc<ContractEvent, DetailContractState> {
       final response = await userRepository.getDetailContract(id);
       if (isSuccess(response.code)) {
         yield SuccessDetailContractState(response.data ?? []);
-      } else if (isFail(response.code)) {
-        loginSessionExpired();
       } else {
         yield ErrorDetailContractState(response.msg ?? '');
       }
@@ -61,8 +59,6 @@ class DetailContractBloc extends Bloc<ContractEvent, DetailContractState> {
       final response = await userRepository.deleteContract({"id": id});
       if (isSuccess(response.code)) {
         yield SuccessDeleteContractState();
-      } else if (isFail(response.code)) {
-        loginSessionExpired();
       } else
         yield ErrorDeleteContractState(response.msg ?? '');
     } catch (e) {
@@ -150,8 +146,6 @@ class DetailContractBloc extends Bloc<ContractEvent, DetailContractState> {
       final response = await userRepository.getSupportContract(id, page);
       if (isSuccess(response.code)) {
         return response.data ?? [];
-      } else if (isFail(response.code)) {
-        loginSessionExpired();
       } else {
         return response.msg ?? '';
       }
@@ -168,8 +162,6 @@ class DetailContractBloc extends Bloc<ContractEvent, DetailContractState> {
       final response = await userRepository.getJobContract(id, page);
       if (isSuccess(response.code)) {
         return response.data ?? [];
-      } else if (isFail(response.code)) {
-        loginSessionExpired();
       } else {
         return response.msg ?? '';
       }

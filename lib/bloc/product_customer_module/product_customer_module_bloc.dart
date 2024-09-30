@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 import '../../api_resfull/user_repository.dart';
 import '../../l10n/key_text.dart';
-import '../../src/app_const.dart';
 import '../../src/base.dart';
 import '../../src/models/model_generator/customer_clue.dart';
 import '../../src/models/model_generator/group_product_response.dart';
@@ -54,8 +53,6 @@ class ProductCustomerModuleBloc
         if (page == BASE_URL.PAGE_DEFAULT)
           listFilter.add(response.data?.dataFilter ?? []);
         resDynamic = response.data?.lists ?? [];
-      } else if (isFail(response.code)) {
-        loginSessionExpired();
       } else
         resDynamic = response.msg ?? '';
     } catch (e) {

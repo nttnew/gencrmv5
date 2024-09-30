@@ -78,8 +78,6 @@ class ContactByCustomerBloc
       final response = await userRepository.getContactByCustomer(customer_id);
       if (isSuccess(response.code)) {
         yield UpdateGetContacBytCustomerState(response.data!);
-      } else if (isFail(response.code)) {
-        loginSessionExpired();
       } else
         yield ErrorGetContactByCustomerState(response.msg ?? '');
     } catch (e) {
@@ -97,8 +95,6 @@ class ContactByCustomerBloc
       final response = await userRepository.getCustomerContract(page, search);
       if (isSuccess(response.code)) {
         success(response);
-      } else if (isFail(response.code)) {
-        loginSessionExpired();
       } else
         yield ErrorGetContactByCustomerState(response.msg ?? '');
     } catch (e) {

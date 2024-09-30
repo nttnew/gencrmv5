@@ -57,7 +57,7 @@ class SupportData {
 
 @JsonSerializable()
 class SupportResponse extends BaseResponse {
-  final SupportData data;
+  final SupportData? data;
 
   SupportResponse(this.data);
 

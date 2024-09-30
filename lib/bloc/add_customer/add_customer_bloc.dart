@@ -5,7 +5,6 @@ import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/widgets/loading_api.dart';
 import '../../api_resfull/user_repository.dart';
 import '../../l10n/key_text.dart';
-import '../../src/app_const.dart';
 import '../../src/models/model_generator/add_customer.dart';
 import '../../src/models/model_generator/customer.dart';
 
@@ -37,8 +36,6 @@ class AddCustomerBloc extends Bloc<AddCustomerEvent, AddCustomerState> {
       final response = await userRepository.getAddCustomer(isIndividual);
       if (isSuccess(response.code)) {
         yield UpdateGetAddCustomerState(response.data ?? []);
-      } else if (isFail(response.code)) {
-        loginSessionExpired();
       } else {
         Loading().popLoading();
         yield ErrorGetAddCustomerState(response.msg ?? '');
@@ -58,8 +55,6 @@ class AddCustomerBloc extends Bloc<AddCustomerEvent, AddCustomerState> {
       final response = await userRepository.getUpdateCustomer(id ?? '');
       if (isSuccess(response.code)) {
         yield SuccessGetEditCustomerState(response.data ?? []);
-      } else if (isFail(response.code)) {
-        loginSessionExpired();
       } else {
         Loading().popLoading();
         yield ErrorGetEditCustomerState(response.msg ?? '');

@@ -6,7 +6,6 @@ import 'package:gen_crm/widgets/loading_api.dart';
 import 'package:rxdart/rxdart.dart';
 import '../../api_resfull/user_repository.dart';
 import '../../l10n/key_text.dart';
-import '../../src/app_const.dart';
 import '../../src/base.dart';
 import '../../src/models/model_generator/customer.dart';
 import '../../src/models/model_generator/customer_clue.dart';
@@ -79,8 +78,6 @@ class GetListCustomerBloc extends Bloc<GetListCustomerEvent, CustomerState> {
         if (page == BASE_URL.PAGE_DEFAULT)
           listType.add(response.data?.filter ?? []);
         resDynamic = response.data?.list ?? [];
-      } else if (isFail(response.code)) {
-        loginSessionExpired();
       } else {
         resDynamic = response.msg ?? '';
       }
@@ -119,8 +116,6 @@ class GetListCustomerBloc extends Bloc<GetListCustomerEvent, CustomerState> {
           yield SuccessAddCustomerIndividualState(
               ['${response.id}', '${response.name}']);
         }
-      } else if (isFail(response.code)) {
-        loginSessionExpired();
       } else {
         Loading().popLoading();
         yield ErrorAddCustomerIndividualState(response.msg ?? '');

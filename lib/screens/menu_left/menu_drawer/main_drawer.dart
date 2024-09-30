@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gen_crm/bloc/blocs.dart';
 import 'package:gen_crm/screens/menu_left/setting/setting_screen.dart';
 import 'package:gen_crm/src/app_const.dart';
 import 'package:gen_crm/widgets/btn_thao_tac.dart';
@@ -12,6 +11,7 @@ import '../../../../models/button_menu_model.dart';
 import '../../../../src/src_index.dart';
 import '../../../../storages/share_local.dart';
 import '../../../../widgets/widget_text.dart';
+import '../../../firebase/firebase_config.dart';
 import 'widget_item_list_menu.dart';
 
 class MainDrawer extends StatefulWidget {
@@ -210,11 +210,7 @@ class _MainDrawerState extends State<MainDrawer> {
                   colorButton2: COLORS.GREY.withOpacity(0.5),
                   colorButton1: getBackgroundWithIsCar(),
                   onTap2: () {
-                    AppNavigator.navigateLogout();
-                    AuthenticationBloc.of(context).add(
-                      AuthenticationLogoutRequested(),
-                    );
-                    LoginBloc.of(context).logout(context);
+                    logoutAllApp();
                   });
             },
           ),

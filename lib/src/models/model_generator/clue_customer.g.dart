@@ -51,7 +51,7 @@ ClueCustomerResponse _$ClueCustomerResponseFromJson(
           ?.map((e) => ClueCustomerData.fromJson(e as Map<String, dynamic>))
           .toList(),
     )
-      ..success = json['success'] as bool?
+      ..success = json['success']
       ..msg = json['msg'] as String?
       ..code = (json['code'] as num?)?.toInt();
 

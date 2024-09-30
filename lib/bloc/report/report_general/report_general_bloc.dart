@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../api_resfull/user_repository.dart';
 import '../../../l10n/key_text.dart';
-import '../../../src/app_const.dart';
 import '../../../src/base.dart';
 import '../../../src/models/model_generator/report_general.dart';
 import '../../../widgets/loading_api.dart';
@@ -43,8 +42,6 @@ class ReportGeneralBloc extends Bloc<ReportGeneralEvent, ReportGeneralState> {
       );
       if (isSuccess(response.code)) {
         yield SuccessReportGeneralState(response.data);
-      } else if (isFail(response.code)) {
-        loginSessionExpired();
       } else
         yield ErrorReportGeneralState(response.msg ?? '');
     } catch (e) {

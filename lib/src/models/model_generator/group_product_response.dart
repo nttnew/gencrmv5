@@ -1,5 +1,5 @@
 class GroupProductResponse {
-  bool? success;
+  dynamic success;
   int? code;
   String? msg;
   Data? data;

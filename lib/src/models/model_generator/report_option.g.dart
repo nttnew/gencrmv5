@@ -28,7 +28,7 @@ TimeResponse _$TimeResponseFromJson(Map<String, dynamic> json) => TimeResponse(
           ? null
           : TimeReport.fromJson(json['data'] as Map<String, dynamic>),
     )
-      ..success = json['success'] as bool?
+      ..success = json['success']
       ..msg = json['msg'] as String?
       ..code = (json['code'] as num?)?.toInt();
 
@@ -46,7 +46,7 @@ FilterResponse _$FilterResponseFromJson(Map<String, dynamic> json) =>
           ? null
           : FilterReport.fromJson(json['data'] as Map<String, dynamic>),
     )
-      ..success = json['success'] as bool?
+      ..success = json['success']
       ..msg = json['msg'] as String?
       ..code = (json['code'] as num?)?.toInt();
 

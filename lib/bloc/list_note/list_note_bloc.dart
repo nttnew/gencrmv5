@@ -91,9 +91,6 @@ class ListNoteBloc extends Bloc<ListNoteEvent, ListNoteState> {
       if (isSuccess(response.code)) {
         Loading().popLoading();
         return response.data?.notes ?? [];
-      } else if (isFail(response.code)) {
-        Loading().popLoading();
-        return response.msg ?? '';
       } else {
         Loading().popLoading();
         return response.msg ?? '';

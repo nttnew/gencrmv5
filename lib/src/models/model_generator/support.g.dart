@@ -59,9 +59,11 @@ Map<String, dynamic> _$SupportDataToJson(SupportData instance) =>
 
 SupportResponse _$SupportResponseFromJson(Map<String, dynamic> json) =>
     SupportResponse(
-      SupportData.fromJson(json['data'] as Map<String, dynamic>),
+      json['data'] != null
+          ? SupportData.fromJson(json['data'] as Map<String, dynamic>)
+          : null,
     )
-      ..success = json['success'] as bool?
+      ..success = json['success']
       ..msg = json['msg'] as String?
       ..code = (json['code'] as num?)?.toInt();
 

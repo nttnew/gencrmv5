@@ -1,7 +1,7 @@
 import 'customer_clue.dart';
 
 class ListHTProductCustomerResponse {
-  bool? success;
+  dynamic success;
   int? code;
   String? msg;
   List<DataHTProductCustomer>? data;

@@ -82,15 +82,19 @@ String hinhThucTT = 'hinh_thuc_thanh_toan';
 String hdSoTien = 'hd_sotien';
 String ghiChu = 'ghi_chu';
 
-void loginSessionExpired() {
+void loginSessionExpired(Function() onTap) {
   Loading().popLoading();
   ShowDialogCustom.showDialogBase(
-    title: getT(KeyT.notification),
-    content: getT(KeyT.login_session_expired_please_login_again),
-    onTap1: () {
-      AppNavigator.navigateLogout();
-    },
-  );
+      title: getT(KeyT.notification),
+      content: getT(KeyT.login_session_expired_please_login_again),
+      onTap1: () {
+        onTap();
+        AppNavigator.navigateLogout();
+      },
+      onWhen: () {
+        onTap();
+        AppNavigator.navigateLogout();
+      });
 }
 
 Widget noData() => Align(

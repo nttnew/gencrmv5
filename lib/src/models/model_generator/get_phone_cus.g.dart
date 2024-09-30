@@ -10,7 +10,7 @@ GetPhoneCusResponse _$GetPhoneCusResponseFromJson(Map<String, dynamic> json) =>
     GetPhoneCusResponse(
       json['data'] as String?,
     )
-      ..success = json['success'] as bool?
+      ..success = json['success']
       ..msg = json['msg'] as String?
       ..code = (json['code'] as num?)?.toInt();
 

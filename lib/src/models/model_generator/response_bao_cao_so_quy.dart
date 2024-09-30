@@ -1,5 +1,5 @@
 class BaoCaoSoQuy {
-  bool? success;
+  dynamic success;
   int? code;
   String? msg;
   DataBaoCaoSoQuy? data;

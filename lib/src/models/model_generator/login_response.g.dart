@@ -83,7 +83,7 @@ LoginResponse _$LoginResponseFromJson(Map<String, dynamic> json) =>
           ? null
           : LoginData.fromJson(json['data'] as Map<String, dynamic>),
     )
-      ..success = json['success'] as bool?
+      ..success = json['success']
       ..msg = json['msg'] as String?
       ..code = (json['code'] as num?)?.toInt();
 
@@ -95,7 +95,7 @@ Map<String, dynamic> _$LoginResponseToJson(LoginResponse instance) =>
       'data': instance.data,
     };
 
-InfoSetupCallCenterRes _$InfoSetupCallcenterResFromJson(
+InfoSetupCallCenterRes _$InfoSetupCallCenterResFromJson(
         Map<String, dynamic> json) =>
     InfoSetupCallCenterRes(
       outbound: json['outbound'] as String?,
@@ -113,7 +113,7 @@ InfoSetupCallCenterRes _$InfoSetupCallcenterResFromJson(
       domain_mobile: json['domain_mobile'] as String?,
     );
 
-Map<String, dynamic> _$InfoSetupCallcenterResToJson(
+Map<String, dynamic> _$InfoSetupCallCenterResToJson(
         InfoSetupCallCenterRes instance) =>
     <String, dynamic>{
       'outbound': instance.outbound,

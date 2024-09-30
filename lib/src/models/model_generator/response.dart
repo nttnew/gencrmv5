@@ -5,7 +5,7 @@ part 'response.g.dart';
 @JsonSerializable()
 class ResponseStatus {
   final int code;
-  final bool? success;
+  final dynamic success;
   final String? message;
 
   const ResponseStatus({required this.code, this.success, this.message});

@@ -48,7 +48,7 @@ class ContractData {
 
 @JsonSerializable()
 class ContractResponse extends BaseResponse {
-  final ContractData data;
+  final ContractData? data;
 
   ContractResponse(this.data);
 

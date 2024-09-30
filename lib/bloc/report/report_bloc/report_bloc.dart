@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
 import '../../../api_resfull/user_repository.dart';
 import '../../../l10n/key_text.dart';
-import '../../../src/app_const.dart';
 import '../../../src/base.dart';
 import '../../../src/models/model_generator/response_ntc_filter.dart';
 import '../../../widgets/listview/list_load_infinity.dart';
@@ -75,8 +74,6 @@ class ReportBloc extends Bloc<ReportEvent, ReportState> {
       );
       if (isSuccess(response.code)) {
         resDynamic = response.data?.list ?? [];
-      } else if (isFail(response.code)) {
-        loginSessionExpired();
       } else {
         resDynamic = response.msg ?? '';
       }
@@ -102,8 +99,6 @@ class ReportBloc extends Bloc<ReportEvent, ReportState> {
       );
       if (isSuccess(response.code)) {
         resDynamic = response.data?.lists ?? [];
-      } else if (isFail(response.code)) {
-        loginSessionExpired();
       } else {
         resDynamic = response.msg ?? '';
       }
@@ -128,8 +123,6 @@ class ReportBloc extends Bloc<ReportEvent, ReportState> {
       );
       if (isSuccess(response.code)) {
         resDynamic = response.data?.list ?? [];
-      } else if (isFail(response.code)) {
-        loginSessionExpired();
       } else
         resDynamic = response.msg ?? '';
     } catch (e) {
@@ -167,8 +160,6 @@ class ReportBloc extends Bloc<ReportEvent, ReportState> {
       );
       if (isSuccess(response.code)) {
         resDynamic = response.data?.data ?? [];
-      } else if (isFail(response.code)) {
-        loginSessionExpired();
       } else
         resDynamic = response.msg ?? '';
     } catch (e) {
@@ -194,8 +185,6 @@ class ReportBloc extends Bloc<ReportEvent, ReportState> {
             time ?? response.data!.thoi_gian_mac_dinh!,
           ),
         );
-      } else if (isFail(response.code)) {
-        loginSessionExpired();
       } else {
         Loading().popLoading();
         yield ErrorReportWorkState(response.msg ?? '');

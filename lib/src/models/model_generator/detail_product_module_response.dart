@@ -3,7 +3,7 @@ import 'package:gen_crm/src/models/model_generator/products_response.dart';
 import 'detail_customer.dart';
 
 class DetailProductResponse {
-  bool? success;
+  dynamic success;
   int? code;
   String? msg;
   List<InfoDataModel>? data;

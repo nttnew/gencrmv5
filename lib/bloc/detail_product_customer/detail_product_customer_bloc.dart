@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/widgets/loading_api.dart';
 import '../../api_resfull/user_repository.dart';
 import '../../l10n/key_text.dart';
-import '../../src/app_const.dart';
 import '../../src/base.dart';
 import '../../src/models/model_generator/detail_product_customer_response.dart';
 import '../../widgets/listview/list_load_infinity.dart';
@@ -45,8 +44,6 @@ class DetailProductCustomerBloc
       if (isSuccess(response.code)) {
         Loading().popLoading();
         yield GetDetailProductCustomerState(response);
-      } else if (isFail(response.code)) {
-        loginSessionExpired();
       } else {
         Loading().popLoading();
         yield ErrorGetDetailProductCustomerState(response.msg ?? '');
@@ -66,8 +63,6 @@ class DetailProductCustomerBloc
           await userRepository.getListCVProductCustomer(spkh: id, page: page);
       if (isSuccess(response.code)) {
         return response.data?.data?.dataList ?? [];
-      } else if (isFail(response.code)) {
-        loginSessionExpired();
       } else {
         return response.msg ?? '';
       }
@@ -85,8 +80,6 @@ class DetailProductCustomerBloc
           await userRepository.getListCHProductCustomer(spkh: id, page: page);
       if (isSuccess(response.code)) {
         return response.data?.lists ?? [];
-      } else if (isFail(response.code)) {
-        loginSessionExpired();
       } else {
         return response.msg ?? '';
       }
@@ -104,8 +97,6 @@ class DetailProductCustomerBloc
           await userRepository.getListHDProductCustomer(spkh: id, page: page);
       if (isSuccess(response.code)) {
         return response.data ?? [];
-      } else if (isFail(response.code)) {
-        loginSessionExpired();
       } else {
         return response.msg ?? '';
       }
@@ -123,8 +114,6 @@ class DetailProductCustomerBloc
           await userRepository.getListHTProductCustomer(spkh: id, page: page);
       if (isSuccess(response.code)) {
         return response.data ?? [];
-      } else if (isFail(response.code)) {
-        loginSessionExpired();
       } else {
         return response.msg ?? '';
       }
@@ -145,8 +134,6 @@ class DetailProductCustomerBloc
       final msg = response.getOrElse('msg', () => -1);
       if (isSuccess(statusCode)) {
         yield SuccessDeleteProductState();
-      } else if (isFail(statusCode)) {
-        loginSessionExpired();
       } else
         yield ErrorDeleteProductState(msg);
     } catch (e) {

@@ -1,5 +1,5 @@
 class ResponseSaveProductCustomer {
-  bool? success;
+  dynamic success;
   int? code;
   String? msg;
   List<dynamic>? data;

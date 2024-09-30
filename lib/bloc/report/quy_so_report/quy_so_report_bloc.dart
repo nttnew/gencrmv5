@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/widgets/loading_api.dart';
 import '../../../api_resfull/user_repository.dart';
 import '../../../l10n/key_text.dart';
-import '../../../src/app_const.dart';
 import '../../../src/base.dart';
 import '../../../src/models/model_generator/response_bao_cao_so_quy.dart';
 
@@ -44,8 +43,6 @@ class QuySoReportBloc extends Bloc<QuySoReportEvent, QuySoReportState> {
       );
       if (isSuccess(response.code)) {
         yield SuccessQuySoReportState(response.data);
-      } else if (isFail(response.code)) {
-        loginSessionExpired();
       } else
         yield ErrorGetListQuySoReportState(response.msg ?? '');
     } catch (e) {

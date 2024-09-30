@@ -151,7 +151,7 @@ AddCustomerIndividual _$AddCustomerIndividualFromJson(
           .toList(),
       (json['chuathanhtoan'] as num?)?.toDouble(),
     )
-      ..success = json['success'] as bool?
+      ..success = json['success']
       ..msg = json['msg'] as String?
       ..code = (json['code'] as num?)?.toInt();
 

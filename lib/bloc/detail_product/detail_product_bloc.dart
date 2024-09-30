@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/widgets/loading_api.dart';
 import '../../api_resfull/user_repository.dart';
 import '../../l10n/key_text.dart';
-import '../../src/app_const.dart';
 import '../../src/base.dart';
 import '../../src/models/model_generator/detail_product_module_response.dart';
 import '../../src/models/model_generator/products_response.dart';
@@ -38,8 +37,6 @@ class DetailProductBloc extends Bloc<DetailProductEvent, DetailProductState> {
           response,
           response.info,
         );
-      } else if (isFail(response.code)) {
-        loginSessionExpired();
       } else {
         yield ErrorGetDetailProductState(response.msg ?? '');
       }
@@ -70,8 +67,6 @@ class DetailProductBloc extends Bloc<DetailProductEvent, DetailProductState> {
       final msg = response.getOrElse('msg', () => -1);
       if (isSuccess(statusCode)) {
         yield SuccessDeleteProductState();
-      } else if (isFail(statusCode)) {
-        loginSessionExpired();
       } else
         yield ErrorDeleteProductState(msg);
     } catch (e) {

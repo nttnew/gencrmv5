@@ -314,15 +314,16 @@ class LoadMoreController<T> {
       }
       showLoad.add(false);
       if (result.runtimeType == String) {
-        ShowDialogCustom.showDialogBase(
-          title: getT(KeyT.notification),
-          content: result.toString(),
-          textButton1: getT(KeyT.try_again),
-          onTap1: () {
-            reloadData();
-            Get.back();
-          },
-        );
+        if (result != '')
+          ShowDialogCustom.showDialogBase(
+            title: getT(KeyT.notification),
+            content: result.toString(),
+            textButton1: getT(KeyT.try_again),
+            onTap1: () {
+              reloadData();
+              Get.back();
+            },
+          );
         isLoadMore = true;
       } else {
         if (page == BASE_URL.PAGE_DEFAULT) {

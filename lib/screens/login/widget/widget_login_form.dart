@@ -56,7 +56,6 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
   }
 
   _init() async {
-    tokenFirebase = await FirebaseConfig.getTokenFcm();
     canAuthenticateWithBiometrics = await auth.canCheckBiometrics;
     canAuthenticate =
         canAuthenticateWithBiometrics || await auth.isDeviceSupported();
@@ -219,8 +218,8 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
                             ),
                           )
                         : null,
-                onSubmit: () {
-                  _onLogin(bloc);
+                onSubmit: () async {
+                  await _onLogin(bloc);
                 },
               ),
               AppValue.vSpaceSmall,
@@ -309,9 +308,10 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
       urlBase = text;
     }
     if (urlBase != shareLocal.getString(PreferencesKey.URL_BASE)) {
-      shareLocal.putString(PreferencesKey.LANGUAGE, '');// nếu mà thay đổi url thì mấy em này đều mặc định
+      shareLocal.putString(PreferencesKey.LANGUAGE,
+          ''); // nếu mà thay đổi url thì mấy em này đều mặc định
       shareLocal.putString(PreferencesKey.LOGIN_FINGER_PRINT, 'false');
-      shareLocal.putString(PreferencesKey.SHOW_LOGIN_FINGER_PRINT,'true');
+      shareLocal.putString(PreferencesKey.SHOW_LOGIN_FINGER_PRINT, 'true');
     }
     shareLocal.putString(PreferencesKey.URL_BASE, urlBase);
     DioProvider.instance(baseUrl: urlBase);
@@ -333,8 +333,9 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
     );
   }
 
-  _onLogin(bloc) {
+  _onLogin(bloc) async {
     if ((_formKey.currentState?.validate() ?? false)) {
+      tokenFirebase = await FirebaseConfig.getTokenFcm();
       _getDataDomain();
       bloc.add(FormSubmitted(device_token: tokenFirebase ?? ''));
     }
@@ -344,7 +345,7 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
     return ButtonCustom(
       marginHorizontal: 0,
       onTap: () async {
-        _onLogin(bloc);
+        await _onLogin(bloc);
       },
       backgroundColor: getBackgroundWithIsCar(),
       title: getT(KeyT.login),
@@ -393,6 +394,7 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
           localizedReason: getT(KeyT.login_with_fingerprint_face_id),
           options: const AuthenticationOptions(biometricOnly: true));
       if (didAuthenticate) {
+        tokenFirebase = await FirebaseConfig.getTokenFcm();
         LoginBloc.of(context)
             .add(LoginWithFingerPrint(device_token: tokenFirebase ?? ''));
       } else {

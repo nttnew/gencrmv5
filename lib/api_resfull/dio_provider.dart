@@ -1,4 +1,5 @@
-import 'package:dio/dio.dart' show Dio;
+import 'package:dio/dio.dart'
+    show Dio, InterceptorsWrapper, RequestOptions, Response;
 import 'package:gen_crm/src/src_index.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:flutter/foundation.dart' as Foundation;
@@ -6,8 +7,16 @@ import '../src/app_const.dart';
 import '../storages/share_local.dart';
 
 class DioProvider {
+  static bool isSessionExpiredShown =
+      false; // Biến cờ để kiểm soát việc hiển thị dialog
+
   static final Dio dio = Dio();
-  static void instance({String? token, String? sess, String? baseUrl}) {
+
+  static void instance({
+    String? token,
+    String? sess,
+    String? baseUrl,
+  }) {
     dio
       ..options.baseUrl = baseUrl ??
           shareLocal.getString(PreferencesKey.URL_BASE) ??
@@ -24,16 +33,43 @@ class DioProvider {
         BASE_URL.AUTHORIZATION: token != null ? token : ''
       }
       ..options.followRedirects = false
-      ..options.validateStatus = (status) {
-        if (status == 401) {
+      ..options.validateStatus = (code) {
+        if (isFail(code) && !isSessionExpiredShown) {
           try {
-            loginSessionExpired();
-          } catch (e) {
-            throw e;
-          }
+            isSessionExpiredShown = true;
+            loginSessionExpired(() {
+              isSessionExpiredShown = false;
+            });
+          } catch (e) {}
         }
-        return status! < 503;
+        return code! < BASE_URL.FAIL_503;
       };
+
+    dio.interceptors.add(
+      InterceptorsWrapper(
+        onResponse: (response, handler) {
+          if (response.data is Map<String, dynamic>) {
+            try {
+              if (isFail(int.tryParse(response.data['code'].toString()))) {
+                // Kiểm tra dữ liệu nếu pass sai cúc luôn
+                return handler.next(
+                  Response(
+                    requestOptions: RequestOptions(path: ''),
+                    data: {
+                      'code': int.tryParse(response.data['code'].toString()),
+                    }, // Trả về null cho dữ liệu
+                  ), // Trả về dữ liệu null
+                ); // Trả về phản hồi cho người gọi
+              }
+            } catch (e) {
+              throw e;
+            }
+          }
+
+          return handler.next(response); // Trả về phản hồi cho người gọi
+        },
+      ),
+    );
 
     // Kiểm tra và thêm logger nếu chưa có
     if (Foundation.kDebugMode &&

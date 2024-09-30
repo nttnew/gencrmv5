@@ -1,7 +1,7 @@
 import 'package:gen_crm/src/models/model_generator/products_response.dart';
 
 class ProductServicePackModel {
-  bool? success;
+  dynamic success;
   int? code;
   String? msg;
   List<ProductsRes>? data;

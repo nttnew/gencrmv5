@@ -1,5 +1,5 @@
 class CheckInResponse {
-  bool? success;
+  dynamic success;
   String? msg;
   int? code;
   Data? data;

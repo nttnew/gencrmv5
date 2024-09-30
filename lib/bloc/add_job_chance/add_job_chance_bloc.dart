@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/widgets/loading_api.dart';
 import '../../api_resfull/user_repository.dart';
 import '../../l10n/key_text.dart';
-import '../../src/app_const.dart';
 import '../../src/base.dart';
 import '../../src/models/index.dart';
 
@@ -32,8 +31,6 @@ class AddJobChanceBloc extends Bloc<AddJobChanceEvent, AddJobChanceState> {
       final response = await userRepository.getAddJobChance(id);
       if (isSuccess(response.code)) {
         yield UpdateGetAddJobChanceState(response.data ?? []);
-      } else if (isFail(response.code)) {
-        loginSessionExpired();
       } else
         yield ErrorGetAddJobChanceState(response.msg ?? '');
     } catch (e) {

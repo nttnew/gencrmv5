@@ -74,7 +74,7 @@ WorkResponse _$WorkResponseFromJson(Map<String, dynamic> json) => WorkResponse(
           ? null
           : WorkData.fromJson(json['data'] as Map<String, dynamic>),
     )
-      ..success = json['success'] as bool?
+      ..success = json['success']
       ..msg = json['msg'] as String?
       ..code = (json['code'] as num?)?.toInt();
 
@@ -101,7 +101,7 @@ DetailWorkResponse _$DetailWorkResponseFromJson(Map<String, dynamic> json) =>
           ? null
           : CheckInLocation.fromJson(json['checkout'] as Map<String, dynamic>),
     )
-      ..success = json['success'] as bool?
+      ..success = json['success']
       ..msg = json['msg'] as String?
       ..code = (json['code'] as num?)?.toInt();
 
@@ -125,7 +125,7 @@ CheckInLocation _$CheckInLocationFromJson(Map<String, dynamic> json) =>
       json['note_location'] as String?,
       json['time'] as String?,
     )
-      ..success = json['success'] as bool?
+      ..success = json['success']
       ..msg = json['msg'] as String?
       ..code = (json['code'] as num?)?.toInt();
 

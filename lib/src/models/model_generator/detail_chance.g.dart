@@ -20,7 +20,7 @@ ListDetailChanceResponse _$ListDetailChanceResponseFromJson(
           ? null
           : CheckInLocation.fromJson(json['checkout'] as Map<String, dynamic>),
     )
-      ..success = json['success'] as bool?
+      ..success = json['success']
       ..msg = json['msg'] as String?
       ..code = (json['code'] as num?)?.toInt();
 

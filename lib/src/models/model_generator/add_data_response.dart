@@ -35,7 +35,7 @@ class AddDataResponse extends BaseResponse {
 @JsonSerializable()
 class EditCusResponse {
   final String? idkh, type, msg;
-  final bool? success;
+  final dynamic success;
   final int? code;
 
   EditCusResponse(this.idkh, this.type, this.success, this.code, this.msg);

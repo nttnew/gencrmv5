@@ -41,7 +41,7 @@ PaymentContractResponse _$PaymentContractResponseFromJson(
               .toList())
           .toList(),
     )
-      ..success = json['success'] as bool?
+      ..success = json['success']
       ..msg = json['msg'] as String?
       ..code = (json['code'] as num?)?.toInt();
 
@@ -61,7 +61,7 @@ DetailContractResponse _$DetailContractResponseFromJson(
           ?.map((e) => InfoDataModel.fromJson(e as Map<String, dynamic>))
           .toList(),
     )
-      ..success = json['success'] as bool?
+      ..success = json['success']
       ..msg = json['msg'] as String?
       ..code = (json['code'] as num?)?.toInt();
 
@@ -112,7 +112,7 @@ SupportContractResponse _$SupportContractResponseFromJson(
           ?.map((e) => SupportContractData.fromJson(e as Map<String, dynamic>))
           .toList(),
     )
-      ..success = json['success'] as bool?
+      ..success = json['success']
       ..msg = json['msg'] as String?
       ..code = (json['code'] as num?)?.toInt();
 

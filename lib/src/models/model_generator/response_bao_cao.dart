@@ -1,7 +1,7 @@
 import 'customer_clue.dart';
 
 class ResponseBaoCao {
-  bool? success;
+  dynamic success;
   int? code;
   String? msg;
   Data? data;

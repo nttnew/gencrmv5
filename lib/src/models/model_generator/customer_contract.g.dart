@@ -11,7 +11,7 @@ CustomerContractResponse _$CustomerContractResponseFromJson(
     CustomerContractResponse(
       (json['data'] as List<dynamic>?)?.map((e) => e as List<dynamic>).toList(),
     )
-      ..success = json['success'] as bool?
+      ..success = json['success']
       ..msg = json['msg'] as String?
       ..code = (json['code'] as num?)?.toInt();
 

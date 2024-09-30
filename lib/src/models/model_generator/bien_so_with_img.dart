@@ -1,5 +1,5 @@
 class BienSoWithImgResponse {
-  bool? success;
+  dynamic success;
   String? msg;
   int? code;
   DataBienSoWithImg? data;

@@ -1,5 +1,5 @@
 class ResponseCarDashboard {
-  bool? success;
+  dynamic success;
   int? code;
   String? msg;
   DataCarDashboard? data;

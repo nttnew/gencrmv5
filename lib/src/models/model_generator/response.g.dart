@@ -9,7 +9,7 @@ part of 'response.dart';
 ResponseStatus _$ResponseStatusFromJson(Map<String, dynamic> json) =>
     ResponseStatus(
       code: (json['code'] as num).toInt(),
-      success: json['success'] as bool?,
+      success: json['success'],
       message: json['message'] as String?,
     );
 

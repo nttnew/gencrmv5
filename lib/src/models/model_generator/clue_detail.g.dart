@@ -11,7 +11,7 @@ DetailClue _$DetailClueFromJson(Map<String, dynamic> json) => DetailClue(
           ?.map((e) => InfoDataModel.fromJson(e as Map<String, dynamic>))
           .toList(),
     )
-      ..success = json['success'] as bool?
+      ..success = json['success']
       ..msg = json['msg'] as String?
       ..code = (json['code'] as num?)?.toInt();
 

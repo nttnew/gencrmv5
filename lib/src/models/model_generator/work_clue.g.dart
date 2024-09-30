@@ -49,7 +49,7 @@ WorkClueResponse _$WorkClueResponseFromJson(Map<String, dynamic> json) =>
           ?.map((e) => WorkClueData.fromJson(e as Map<String, dynamic>))
           .toList(),
     )
-      ..success = json['success'] as bool?
+      ..success = json['success']
       ..msg = json['msg'] as String?
       ..code = (json['code'] as num?)?.toInt();
 

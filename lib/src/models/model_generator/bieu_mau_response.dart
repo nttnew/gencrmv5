@@ -1,5 +1,5 @@
 class BieuMauResponse {
-  bool? success;
+  dynamic success;
   String? msg;
   int? code;
   List<BieuMauItemRes>? data;

@@ -1,7 +1,7 @@
 import 'customer_clue.dart';
 
 class MainMenuResponse {
-  bool? success;
+  dynamic success;
   String? msg;
   int? code;
   Data? data;

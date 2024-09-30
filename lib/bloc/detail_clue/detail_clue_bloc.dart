@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/api_resfull/api.dart';
 import '../../l10n/key_text.dart';
-import '../../src/app_const.dart';
 import '../../src/base.dart';
 import '../../src/models/model_generator/detail_customer.dart';
 import '../../widgets/listview/list_load_infinity.dart';
@@ -71,8 +70,6 @@ class GetDetailClueBloc extends Bloc<GetDetailClueEvent, DetailClueState> {
       final response = await userRepository.getWorkClue(id, page);
       if (isSuccess(response.code)) {
         return response.data ?? [];
-      } else if (isFail(response.code)) {
-        loginSessionExpired();
       } else {
         return response.msg ?? '';
       }

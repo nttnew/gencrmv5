@@ -1,7 +1,7 @@
 import 'detail_customer.dart';
 
 class DetailProductCustomerResponse {
-  bool? success;
+  dynamic success;
   int? code;
   String? msg;
   List<InfoDataModel>? data;

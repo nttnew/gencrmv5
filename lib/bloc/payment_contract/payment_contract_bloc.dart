@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/api_resfull/api.dart';
 import '../../l10n/key_text.dart';
-import '../../src/app_const.dart';
 import '../../src/base.dart';
 import '../../src/models/model_generator/detail_contract.dart';
 import '../../widgets/loading_api.dart';
@@ -42,8 +41,6 @@ class PaymentContractBloc
         } else {
           yield SuccessPaymentContractState(response.data);
         }
-      } else if (isFail(response.code)) {
-        loginSessionExpired();
       } else
         yield ErrorPaymentContractState(response.msg ?? '');
     } catch (e) {
@@ -65,16 +62,12 @@ class PaymentContractBloc
       );
       if (isSuccess(response.code)) {
         return '';
-      } else if (isFail(response.code)) {
-        loginSessionExpired();
       } else
         return response.msg ?? '';
     } catch (e) {
       Loading().popLoading();
       return mess;
     }
-    Loading().popLoading();
-    return mess;
   }
 
   static PaymentContractBloc of(BuildContext context) =>

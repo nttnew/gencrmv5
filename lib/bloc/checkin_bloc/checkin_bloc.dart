@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/api_resfull/api.dart';
 import '../../l10n/key_text.dart';
-import '../../src/app_const.dart';
 import '../../src/base.dart';
 import '../../widgets/loading_api.dart';
 
@@ -50,8 +49,6 @@ class CheckInBloc extends Bloc<CheckInEvent, CheckInState> {
       );
       if (isSuccess(response.code)) {
         yield SuccessCheckInState();
-      } else if (isFail(response.code)) {
-        loginSessionExpired();
       } else {
         yield ErrorCheckInState(response.msg ?? '');
       }

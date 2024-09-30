@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/widgets/loading_api.dart';
 import '../../api_resfull/user_repository.dart';
 import '../../l10n/key_text.dart';
-import '../../src/app_const.dart';
 import '../../src/base.dart';
 
 part 'customer_contract_event.dart';
@@ -47,8 +46,6 @@ class CustomerContractBloc
             yield SuccessGetContractCustomerState(list!);
           }
         }
-      } else if (isFail(response.code)) {
-        loginSessionExpired();
       } else
         yield ErrorGetContractCustomerState(response.msg ?? '');
     } catch (e) {
@@ -68,8 +65,6 @@ class CustomerContractBloc
       final response = await userRepository.getContactByCustomer(id);
       if (isSuccess(response.code)) {
         yield SuccessGetContractCustomerState(response.data!);
-      } else if (isFail(response.code)) {
-        loginSessionExpired();
       } else
         yield ErrorGetContractCustomerState(response.msg ?? '');
     } catch (e) {

@@ -1,5 +1,5 @@
 class DetailXeDichVuResponse {
-  bool? success;
+  dynamic success;
   int? code;
   String? msg;
   DetailXeDichVuData? data;

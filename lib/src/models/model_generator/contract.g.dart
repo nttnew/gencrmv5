@@ -63,9 +63,11 @@ Map<String, dynamic> _$ContractDataToJson(ContractData instance) =>
 
 ContractResponse _$ContractResponseFromJson(Map<String, dynamic> json) =>
     ContractResponse(
-      ContractData.fromJson(json['data'] as Map<String, dynamic>),
+      json['data'] == null
+          ? null
+          : ContractData.fromJson(json['data'] as Map<String, dynamic>),
     )
-      ..success = json['success'] as bool?
+      ..success = json['success']
       ..msg = json['msg'] as String?
       ..code = (json['code'] as num?)?.toInt();
 

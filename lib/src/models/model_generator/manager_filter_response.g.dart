@@ -13,7 +13,7 @@ ManagerFilterResponse _$ManagerFilterResponseFromJson(
           ? null
           : DataResponse.fromJson(json['data'] as Map<String, dynamic>),
     )
-      ..success = json['success'] as bool?
+      ..success = json['success']
       ..msg = json['msg'] as String?
       ..code = (json['code'] as num?)?.toInt();
 
@@ -31,7 +31,7 @@ DataResponse _$DataResponseFromJson(Map<String, dynamic> json) => DataResponse(
           ?.map((e) => ManagerResponse.fromJson(e as Map<String, dynamic>))
           .toList(),
     )
-      ..success = json['success'] as bool?
+      ..success = json['success']
       ..msg = json['msg'] as String?
       ..code = (json['code'] as num?)?.toInt();
 
@@ -55,7 +55,7 @@ ManagerResponse _$ManagerResponseFromJson(Map<String, dynamic> json) =>
           ? null
           : DataTwoResponse.fromJson(json['data'] as Map<String, dynamic>),
     )
-      ..success = json['success'] as bool?
+      ..success = json['success']
       ..msg = json['msg'] as String?
       ..code = (json['code'] as num?)?.toInt();
 
@@ -72,7 +72,7 @@ Map<String, dynamic> _$ManagerResponseToJson(ManagerResponse instance) =>
 AttrResponse _$AttrResponseFromJson(Map<String, dynamic> json) => AttrResponse(
       json['id'] as String?,
     )
-      ..success = json['success'] as bool?
+      ..success = json['success']
       ..msg = json['msg'] as String?
       ..code = (json['code'] as num?)?.toInt();
 
@@ -89,7 +89,7 @@ DataTwoResponse _$DataTwoResponseFromJson(Map<String, dynamic> json) =>
       json['icon'] as String?,
       json['title'] as String?,
     )
-      ..success = json['success'] as bool?
+      ..success = json['success']
       ..msg = json['msg'] as String?
       ..code = (json['code'] as num?)?.toInt();
 

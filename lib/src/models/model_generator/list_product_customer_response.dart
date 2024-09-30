@@ -3,7 +3,7 @@ import 'package:gen_crm/src/models/model_generator/action_model.dart';
 import 'customer_clue.dart';
 
 class ListProductCustomerResponse {
-  bool? success;
+  dynamic success;
   int? code;
   String? msg;
   Data? data;

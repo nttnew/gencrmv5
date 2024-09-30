@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../api_resfull/user_repository.dart';
 import '../../../l10n/key_text.dart';
-import '../../../src/app_const.dart';
 import '../../../src/base.dart';
 import '../../../src/models/model_generator/report_product.dart';
 import '../../../widgets/loading_api.dart';
@@ -50,8 +49,6 @@ class ReportProductBloc extends Bloc<ReportProductEvent, ReportProductState> {
       );
       if (isSuccess(response.code)) {
         yield SuccessReportProductState(response.data!.list);
-      } else if (isFail(response.code)) {
-        loginSessionExpired();
       } else {
         Loading().popLoading();
         yield ErrorReportProductState(response.msg ?? '');

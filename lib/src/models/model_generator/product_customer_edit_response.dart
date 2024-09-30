@@ -1,5 +1,5 @@
 class ResponseEditProductCustomer {
-  bool? success;
+  dynamic success;
   int? code;
   String? msg;
   Data? data;

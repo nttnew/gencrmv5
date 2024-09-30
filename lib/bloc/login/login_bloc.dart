@@ -18,6 +18,7 @@ import 'package:gen_crm/storages/share_local.dart';
 import 'package:get/get.dart' as GET;
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../firebase/firebase_config.dart';
 import '../../l10n/key_text.dart';
 import '../../src/app_const.dart';
 import '../../src/models/model_generator/customer_clue.dart';
@@ -107,8 +108,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       );
       if (isSuccess(response.code)) {
         resDynamic = response.data;
-      } else if (isFail(response.code)) {
-        loginSessionExpired();
       } else
         resDynamic = response.msg ?? '';
     } catch (e) {
@@ -133,8 +132,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       Loading().popLoading();
       if (isSuccess(statusCode)) {
         return '';
-      } else if (isFail(statusCode)) {
-        loginSessionExpired();
       } else {
         return msg;
       }
@@ -163,8 +160,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
       if (isSuccess(statusCode)) {
         return '';
-      } else if (isFail(statusCode)) {
-        loginSessionExpired();
       } else {
         return msg;
       }
@@ -186,8 +181,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       );
       if (isSuccess(response.code)) {
         resDynamic = response.data?.dataHD ?? [];
-      } else if (isFail(response.code)) {
-        loginSessionExpired();
       } else
         resDynamic = response.msg ?? '';
     } catch (e) {
@@ -232,10 +225,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     shareLocal.putString(PreferencesKey.REGISTER_MSG, LoginBloc.UNREGISTER);
     shareLocal.putString(PreferencesKey.DATA_CALL, '');
     PitelClient.getInstance().logoutExtension(getSipInfo());
-    // FirebaseConfig.deleteTokenFcm();
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool(PreferencesKey.IS_LOGGED_IN, false);
     LoginBloc.of(context).loginData = null;
+    await FirebaseConfig.deleteTokenFcm();
   }
 
   Future<void> getChiNhanh() async {
@@ -498,11 +491,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           PreferencesKey.LIST_MENU_FLASH,
           jsonEncode(response.data?.quickMenu),
         );
-      } else {
-        loginSessionExpired();
       }
     } catch (e) {
-      loginSessionExpired();
+      throw e;
     }
   }
 
@@ -567,8 +558,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       );
       if (isSuccess(response.code)) {
         res = response.data ?? [];
-      } else if (isFail(response.code)) {
-        res = response.msg ?? '';
       } else {
         res = response.msg ?? '';
       }
@@ -601,8 +590,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       if (isSuccess(response.code)) {
         res['html'] = response.data?.link ?? '';
         res['mes'] = '';
-      } else if (isFail(response.code)) {
-        res['mes'] = response.msg ?? '';
       } else {
         res['mes'] = response.msg ?? '';
       }

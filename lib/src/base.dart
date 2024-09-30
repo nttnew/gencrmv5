@@ -224,6 +224,8 @@ class BASE_URL {
   static const SUCCESS = 0;
   static const SUCCESS_200 = 200;
   static const FAIL_999 = 999;
+  static const FAIL_401 = 401;
+  static const FAIL_503 = 503;
   static const FAIL_101 = 101;
 
   static const ACTIVE = 1;
@@ -441,4 +443,6 @@ bool isSuccess(int? code) =>
     code == BASE_URL.SUCCESS || code == BASE_URL.SUCCESS_200;
 
 bool isFail(int? code) =>
-    code == BASE_URL.FAIL_999 || code == BASE_URL.FAIL_101;
+    code == BASE_URL.FAIL_401 ||
+    code == BASE_URL.FAIL_999 ||
+    code == BASE_URL.FAIL_101;

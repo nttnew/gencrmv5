@@ -1,5 +1,5 @@
 class AddressCustomerResponse {
-  bool? success;
+  dynamic success;
   String? msg;
   int? code;
   String? data;

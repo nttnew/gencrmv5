@@ -5,7 +5,6 @@ import 'package:gen_crm/src/models/model_generator/customer_clue.dart';
 import 'package:rxdart/rxdart.dart';
 import '../../api_resfull/user_repository.dart';
 import '../../l10n/key_text.dart';
-import '../../src/app_const.dart';
 import '../../src/base.dart';
 import '../../src/models/model_generator/contract.dart';
 import '../../widgets/listview/list_load_infinity.dart';
@@ -44,10 +43,8 @@ class ContractBloc extends Bloc<ContractEvent, ContractState> {
       );
       if (isSuccess(response.code)) {
         if (page == BASE_URL.PAGE_DEFAULT)
-          listType.add(response.data.filter ?? []);
-        resDynamic = response.data.list ?? [];
-      } else if (isFail(response.code)) {
-        loginSessionExpired();
+          listType.add(response.data?.filter ?? []);
+        resDynamic = response.data?.list ?? [];
       } else
         resDynamic = response.msg ?? '';
     } catch (e) {

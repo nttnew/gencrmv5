@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../api_resfull/user_repository.dart';
 import '../../l10n/key_text.dart';
-import '../../src/app_const.dart';
 import '../../src/base.dart';
 import '../../src/models/model_generator/product_response.dart';
 import '../../src/models/model_generator/service_pack_response.dart';
@@ -42,8 +41,6 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       );
       if (isSuccess(response.code)) {
         resDynamic = response.data?.product ?? [];
-      } else if (isFail(response.code)) {
-        loginSessionExpired();
       } else
         resDynamic = response.msg ?? '';
     } catch (e) {
@@ -66,8 +63,6 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       if (isSuccess(response.code)) {
         Loading().popLoading();
         return response.data ?? [];
-      } else if (isFail(response.code)) {
-        loginSessionExpired();
       } else {
         Loading().popLoading();
         return response.msg ?? '';
@@ -90,9 +85,6 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         result['mess'] = '';
         result['list'] = response.data;
         //data
-      } else if (isFail(response.code)) {
-        Loading().popLoading();
-        loginSessionExpired();
       } else {
         result['mess'] = response.msg ?? '';
         Loading().popLoading();

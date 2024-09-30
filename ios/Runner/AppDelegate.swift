@@ -60,17 +60,54 @@ import flutter_callkit_incoming_timer
 
     // Handle incoming pushes
     func pushRegistry(_ registry: PKPushRegistry, didReceiveIncomingPushWith payload: PKPushPayload, for type: PKPushType, completion: @escaping () -> Void) {
-        guard type == .voIP else { return }
+        if type == .voIP {
+//                print("fuck---------voIP")
 
-        let nameCaller = payload.dictionaryPayload["nameCaller"] as? String ?? ""
-        let handle = payload.dictionaryPayload["handle"] as? String ?? ""
-        let isVideo = payload.dictionaryPayload["isVideo"] as? Bool ?? false
+                // Xử lý thông báo VoIP
+                let nameCaller = payload.dictionaryPayload["nameCaller"] as? String ?? ""
+                let handle = payload.dictionaryPayload["handle"] as? String ?? ""
+                let isVideo = payload.dictionaryPayload["isVideo"] as? Bool ?? false
 
-        let data = flutter_callkit_incoming_timer.Data(id: UUID().uuidString, nameCaller: nameCaller, handle: handle, type: isVideo ? 1 : 0)
-        //set more data
-        data.extra = ["user": "abc@123", "platform": "ios"]
+                let data = flutter_callkit_incoming_timer.Data(id: UUID().uuidString, nameCaller: nameCaller, handle: handle, type: isVideo ? 1 : 0)
+                //set more data
+                data.extra = ["user": "abc@123", "platform": "ios"]
 
-        SwiftFlutterCallkitIncomingPlugin.sharedInstance?.showCallkitIncoming(data, fromPushKit: true)
+                SwiftFlutterCallkitIncomingPlugin.sharedInstance?.showCallkitIncoming(data, fromPushKit: true)
+            } else {
+                return
+                // Nếu không phải VoIP, đẩy dữ liệu về Flutter
+//                 let userInfo = payload.dictionaryPayload
+//                 sendNotificationDataToFlutter(userInfo: userInfo)
+            }
     }
+
+//    private func sendNotificationDataToFlutter(userInfo: [AnyHashable: Any]) {
+//        if let flutterViewController = window?.rootViewController as? FlutterViewController {
+//            let channel = FlutterMethodChannel(name: "com.yourapp/notifications", binaryMessenger: flutterViewController.binaryMessenger)
+//            // Chuyển dữ liệu từ native sang Flutter
+//            channel.invokeMethod("notificationReceived", arguments: userInfo)
+//        }
+//    }
+//
+//    override func userNotificationCenter(_ center: UNUserNotificationCenter,
+//                                didReceive response: UNNotificationResponse,
+//                                withCompletionHandler completionHandler: @escaping () -> Void) {
+//        // Lấy dữ liệu thông báo
+//        let userInfo = response.notification.request.content.userInfo
+//        sendNotificationDataToFlutter(userInfo: userInfo)
+//
+//    }
+//
+//    override func userNotificationCenter(_ center: UNUserNotificationCenter,
+//                             willPresent notification: UNNotification,
+//                             withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+//     // Lấy dữ liệu thông báo
+//     let userInfo = notification.request.content.userInfo
+//     sendNotificationDataToFlutter(userInfo: userInfo)
+//
+//     // Hiển thị thông báo
+//     completionHandler([.alert, .sound, .badge])
+//    }
+
 
 }

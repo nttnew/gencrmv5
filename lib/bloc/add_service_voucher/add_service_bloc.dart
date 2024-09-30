@@ -9,7 +9,6 @@ import 'package:gen_crm/widgets/loading_api.dart';
 import 'package:rxdart/rxdart.dart';
 import '../../api_resfull/user_repository.dart';
 import '../../l10n/key_text.dart';
-import '../../src/app_const.dart';
 import '../../src/models/model_generator/add_customer.dart';
 import '../../src/models/model_generator/customer.dart';
 import '../../src/models/model_generator/list_car_response.dart';
@@ -409,8 +408,6 @@ class ServiceVoucherBloc
           await userRepository.postAddServiceVoucher(sdt, bienSoXe);
       if (isSuccess(response.code)) {
         yield GetServiceVoucherState(response.data ?? []);
-      } else if (isFail(response.code)) {
-        loginSessionExpired();
       } else {
         Loading().popLoading();
         yield ErrorGetServiceVoucherState(response.msg ?? '');
@@ -440,8 +437,6 @@ class ServiceVoucherBloc
       if (isSuccess(response.code)) {
         resDynamic =
             !isPhone ? response.data?.cars : response.data?.customers ?? [];
-      } else if (isFail(response.code)) {
-        loginSessionExpired();
       } else
         resDynamic = response.msg ?? '';
     } catch (e) {
