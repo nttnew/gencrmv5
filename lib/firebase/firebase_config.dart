@@ -156,7 +156,7 @@ class NotificationHandler { //todo chưa done
   // Hàm lắng nghe dữ liệu từ native iOS
   static Future<void> handleNotification(Map<String, dynamic> message) async {
     // Xử lý dữ liệu nhận được từ thông báo
-    print('Received notification data from iOS: $message');
+    // print('Received notification data from iOS: $message');
   }
 
   // Lắng nghe từ native gọi vào Flutter
