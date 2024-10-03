@@ -133,7 +133,9 @@ class _MainDrawerState extends State<MainDrawer> {
                     ),
                     Expanded(
                       child: Container(
-                        height: 75,
+                        constraints: BoxConstraints(
+                          minHeight: 75,
+                        ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
