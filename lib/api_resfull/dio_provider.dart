@@ -24,7 +24,7 @@ class DioProvider {
       ..options.connectTimeout =
           Duration(milliseconds: BASE_URL.connectionTimeout).inMilliseconds
       ..options.receiveTimeout =
-          Duration(milliseconds: BASE_URL.connectionTimeout).inMilliseconds
+          Duration(milliseconds: BASE_URL.receiveTimeout).inMilliseconds
       ..options.headers = {
         BASE_URL.language:
             shareLocal.getString(PreferencesKey.LANGUAGE_NAME) ?? '',

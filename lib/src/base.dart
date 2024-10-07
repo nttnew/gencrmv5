@@ -205,9 +205,9 @@ class BASE_URL {
   static const GET_BIEN_SO_XE_WITH_IMG =
       'modules/genmobile2/helper/getlicensePlateFromImage';
 
-  static const int receiveTimeout = 30000;
   static const ENV = 'assets/.env';
   static const int connectionTimeout = 30000;
+  static const int receiveTimeout = 60000;
   static const content_type = 'Content-Type';
   static const language = 'language';
   static const application_json = 'application/json';

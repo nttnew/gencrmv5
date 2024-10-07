@@ -254,7 +254,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }
 
   void getListMenuFlash() {
-    String data = shareLocal.getString(PreferencesKey.LIST_MENU_FLASH) ?? "";
+    String data = shareLocal.getString(PreferencesKey.LIST_MENU_FLASH) ?? '';
     if (data != '') {
       final result = json.decode(data);
       final resultHangXe = result.map((e) => Customer.fromJson(e)).toList();
@@ -318,14 +318,15 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       try {
         if (state.status.isValidated) {
           Loading().showLoading(isLogin: true);
-
           yield state.copyWith(status: FormzStatus.submissionInProgress);
-          var response = await userRepository.loginApp(
+
+          final response = await userRepository.loginApp(
             email: state.email.value,
             password: state.password.value,
             platform: Platform.isIOS ? 'iOS' : 'Android',
             device_token: event.device_token,
           );
+
           shareLocal.putString(PreferencesKey.DEVICE_TOKEN, event.device_token);
           if (isSuccess(response.code)) {
             shareLocal.putString(
@@ -339,27 +340,28 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             final userName =
                 await shareLocal.getString(PreferencesKey.USER_NAME);
             if (userName != state.email.value.trim()) {
-              shareLocal.putString(PreferencesKey.LOGIN_FINGER_PRINT, "false");
+              shareLocal.putString(PreferencesKey.LOGIN_FINGER_PRINT, 'false');
               shareLocal.putString(
-                  PreferencesKey.SHOW_LOGIN_FINGER_PRINT, "true");
+                  PreferencesKey.SHOW_LOGIN_FINGER_PRINT, 'true');
             }
             await shareLocal.putString(
                 PreferencesKey.USER_NAME, state.email.value);
             await _saveData(response);
             await shareLocal.putString(
                 PreferencesKey.USER_PASSWORD, state.password.value);
-            Loading().popLoading();
 
+            Loading().popLoading();
             yield state.copyWith(
-                status: FormzStatus.submissionSuccess,
-                message: response.msg ?? '',
-                user: response.data!);
+              status: FormzStatus.submissionSuccess,
+              message: response.msg ?? '',
+              user: response.data,
+            );
           } else {
             Loading().popLoading();
-
             yield state.copyWith(
-                status: FormzStatus.submissionFailure,
-                message: response.msg ?? '');
+              status: FormzStatus.submissionFailure,
+              message: response.msg ?? '',
+            );
           }
         }
       } catch (e) {
@@ -367,24 +369,27 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         yield state.copyWith(
             status: FormzStatus.submissionFailure,
             message: getT(KeyT.an_error_occurred));
-        throw e;
       }
     } else {
       if (event is LoginWithFingerPrint) {
-        Loading().showLoading(isLogin: true);
-        yield state.copyWith(status: FormzStatus.submissionInProgress);
         try {
+          Loading().showLoading(isLogin: true);
+          yield state.copyWith(status: FormzStatus.submissionInProgress);
+
           String userName =
-              shareLocal.getString(PreferencesKey.USER_NAME) ?? "";
+              shareLocal.getString(PreferencesKey.USER_NAME) ?? '';
           String password =
-              shareLocal.getString(PreferencesKey.USER_PASSWORD) ?? "";
+              shareLocal.getString(PreferencesKey.USER_PASSWORD) ?? '';
+
           var response = await userRepository.loginApp(
             email: userName,
             password: password,
             platform: Platform.isIOS ? 'iOS' : 'Android',
             device_token: event.device_token,
           );
+
           shareLocal.putString(PreferencesKey.DEVICE_TOKEN, event.device_token);
+
           if (isSuccess(response.code)) {
             shareLocal.putString(
                 PreferencesKey.CAR_CRM, response.data?.carCRM.toString() ?? '');
@@ -393,23 +398,26 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
               token: response.data?.token,
             );
             await _saveData(response);
+
             Loading().popLoading();
             yield state.copyWith(
-                status: FormzStatus.submissionSuccess,
-                message: response.msg ?? '',
-                user: response.data!);
+              status: FormzStatus.submissionSuccess,
+              message: response.msg ?? '',
+              user: response.data,
+            );
           } else {
             Loading().popLoading();
             yield state.copyWith(
-                status: FormzStatus.submissionFailure,
-                message: response.msg ?? '');
+              status: FormzStatus.submissionFailure,
+              message: response.msg ?? '',
+            );
           }
         } catch (e) {
           Loading().popLoading();
           yield state.copyWith(
-              status: FormzStatus.submissionFailure,
-              message: getT(KeyT.an_error_occurred));
-          throw e;
+            status: FormzStatus.submissionFailure,
+            message: getT(KeyT.an_error_occurred),
+          );
         }
       }
     }
@@ -427,19 +435,19 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     await shareLocal.putString(
         dotenv.env[PreferencesKey.TOKEN] ?? '', response.data?.token ?? '');
     await shareLocal.putString(
-        PreferencesKey.USER_EMAIL, response.data?.info_user?.email ?? "");
+        PreferencesKey.USER_EMAIL, response.data?.info_user?.email ?? '');
     await shareLocal.putString(
-        PreferencesKey.USER_PHONE, response.data?.info_user?.phone ?? "");
+        PreferencesKey.USER_PHONE, response.data?.info_user?.phone ?? '');
     await shareLocal.putString(
-        PreferencesKey.USER_ADDRESS, response.data?.info_user?.dia_chi ?? "");
+        PreferencesKey.USER_ADDRESS, response.data?.info_user?.dia_chi ?? '');
     await shareLocal.putString(PreferencesKey.USER_FULL_NAME,
-        response.data?.info_user?.fullname ?? "");
+        response.data?.info_user?.fullname ?? '');
     await shareLocal.putString(
-        PreferencesKey.URL_AVATAR, response.data?.info_user?.avatar ?? "");
+        PreferencesKey.URL_AVATAR, response.data?.info_user?.avatar ?? '');
     await shareLocal.putString(
-        PreferencesKey.ID_USER, response.data?.info_user?.user_id ?? "");
+        PreferencesKey.ID_USER, response.data?.info_user?.user_id ?? '');
     await shareLocal.putString(
-        PreferencesKey.MONEY, response.data?.tien_te ?? "");
+        PreferencesKey.MONEY, response.data?.tien_te ?? '');
     await shareLocal.putString(
         PreferencesKey.LANGUAGE_BE, jsonEncode(response.data?.languages ?? []));
     for (final value in response.data?.languages ?? []) {
