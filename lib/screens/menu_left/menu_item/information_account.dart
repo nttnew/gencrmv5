@@ -65,7 +65,7 @@ class _InformationAccountState extends State<InformationAccount> {
 
   @override
   void initState() {
-    GetInfoAccBloc.of(context).add(InitGetInfoAcc());
+    GetInfoAccBloc.of(context).add(InitGetInfoAcc(isLoading: true));
     _emailFocusNode.addListener(() {
       if (!_emailFocusNode.hasFocus) {
         context.read<InfoAccBloc>().add(EmailUnfocused());
@@ -93,7 +93,7 @@ class _InformationAccountState extends State<InformationAccount> {
               GetSnackBarUtils.removeSnackBar();
               ShowDialogCustom.showDialogBase(
                 onTap1: () {
-                  GetInfoAccBloc.of(context).add(InitGetInfoAcc());
+                  GetInfoAccBloc.of(context).add(InitGetInfoAcc(isLoading: true));
                   AppNavigator.navigateBack();
                 },
                 title: getT(KeyT.success),
@@ -254,7 +254,7 @@ class _InformationAccountState extends State<InformationAccount> {
               } else if (state is Error) {
                 return ErrorItem(
                   onPressed: () =>
-                      GetInfoAccBloc.of(context).add(InitGetInfoAcc()),
+                      GetInfoAccBloc.of(context).add(InitGetInfoAcc(isLoading: true)),
                   error: getT(KeyT.an_error_occurred),
                 );
               } else {

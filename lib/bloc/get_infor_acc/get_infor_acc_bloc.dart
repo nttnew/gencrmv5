@@ -20,7 +20,7 @@ class GetInfoAccBloc extends Bloc<GetInfoAccEvent, GetInfoAccState> {
   @override
   Stream<GetInfoAccState> mapEventToState(GetInfoAccEvent event) async* {
     if (event is InitGetInfoAcc) {
-      yield* _getInfoAcc(event.isLoading ?? true);
+      yield* _getInfoAcc(event.isLoading);
     }
   }
 

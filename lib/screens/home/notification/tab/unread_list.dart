@@ -38,7 +38,7 @@ class _UnReadListState extends State<UnReadList>
   reload() async {
     _bloc.showSelectAll.add(false);
     _bloc.resetSelect();
-    _bloc.add(CheckNotification());
+    _bloc.add(CheckNotification(isLoading: true));
     _bloc.add(InitGetListUnReadNotificationEvent(BASE_URL.PAGE_DEFAULT));
   }
 

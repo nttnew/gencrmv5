@@ -41,7 +41,7 @@ class UnreadNotificationBloc
         id: event.id,
       );
     } else if (event is CheckNotification) {
-      yield* _checkNotification(event.isLoading ?? true);
+      yield* _checkNotification(event.isLoading);
     } else if (event is ShowSelectOrUnselectAll) {
       yield* selectOrUnselectAll(isSelect: event.isSelect ?? true);
     }
@@ -60,9 +60,6 @@ class UnreadNotificationBloc
     if (ids != '') {
       String dataIds = ids.splitBefore(',');
       this.add(DeleteUnReadListNotificationEvent(dataIds));
-    } else {
-      String dataIds = ids.splitBefore(',');
-      print('fuck${dataIds}');
     }
   }
 
@@ -111,7 +108,7 @@ class UnreadNotificationBloc
   }) {
     if (listNotification?.isNotEmpty ?? false) {
       int index = listNotification!.indexWhere((element) =>
-      element.id == value.id && element.recordId == element.recordId);
+          element.id == value.id && element.recordId == element.recordId);
       if (index != -1) {
         listNotification![index].isSelect = isSelect;
       }
@@ -192,7 +189,8 @@ class UnreadNotificationBloc
   Stream<UnReadNotificationState> _checkNotification(bool isLoading) async* {
     try {
       if (isLoading) Loading().showLoading();
-      final response = await userRepository.getListUnReadNotification(1);
+      final response =
+          await userRepository.getListUnReadNotification(BASE_URL.PAGE_DEFAULT);
       if (isSuccess(response.code)) {
         if (isLoading) Loading().popLoading();
         if ((response.data?.list?.length ?? 0) > 0) {

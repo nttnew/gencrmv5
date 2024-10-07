@@ -16,7 +16,7 @@ class InitGetListUnReadNotificationEvent extends UnReadNotificationEvent {
     this.isLoading = true,
   });
   @override
-  List<Object?> get props => [page];
+  List<Object?> get props => [page, isLoading];
 }
 
 class DeleteUnReadListNotificationEvent extends UnReadNotificationEvent {
@@ -32,8 +32,10 @@ class DeleteUnReadListNotificationEvent extends UnReadNotificationEvent {
 }
 
 class CheckNotification extends UnReadNotificationEvent {
-  final bool? isLoading;
-  CheckNotification({this.isLoading});
+  final bool isLoading;
+  CheckNotification({
+    required this.isLoading,
+  });
 }
 
 class ReadNotificationEvent extends UnReadNotificationEvent {

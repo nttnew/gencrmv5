@@ -8,7 +8,7 @@ abstract class GetInfoAccEvent extends Equatable {
 }
 
 class InitGetInfoAcc extends GetInfoAccEvent {
-  InitGetInfoAcc({this.isLoading});
+  InitGetInfoAcc({required this.isLoading});
 
-  final bool? isLoading;
+  final bool isLoading;
 }
