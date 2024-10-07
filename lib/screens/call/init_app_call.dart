@@ -120,10 +120,10 @@ class _InitCallAppState extends ConsumerState<InitCallApp>
   void didChangeAppLifecycleState(AppLifecycleState state) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.reload();
-    print('fuck---------$state');
+    // print('fuck---------$state');
     if (state == AppLifecycleState.resumed) {
       String? title = await prefs.getString(PreferencesKey.LOGOUT_STATUS);
-      print('fuck---------$title');
+      // print('fuck---------$title');
       if (title == LOGOUT_NOTIFICATION) {
         logoutAllApp();
         await prefs.setString(PreferencesKey.LOGOUT_STATUS, '');
