@@ -1,6 +1,6 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import 'cupertino_loading.dart';
 
 class Loading {
@@ -9,12 +9,13 @@ class Loading {
   showLoading({isLogin = false}) {
     loading.value++;
     if (isLoading() && Get.isDialogOpen != true) {
-      Get.dialog(Container(
-        color: Colors.transparent,
-        child: GestureDetector(
-          onTap: () {},
-          child: Center(child: isLogin ? SizedBox() : CupertinoLoading()),
-        ),
+      Get.dialog(GestureDetector(
+        onDoubleTap: () {
+          if (isLogin && Platform.isIOS) Get.back();
+        },
+        child: Container(
+            color: Colors.transparent,
+            child: Center(child: isLogin ? SizedBox() : CupertinoLoading())),
       ));
     }
   }
