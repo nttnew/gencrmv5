@@ -43,7 +43,7 @@ class UnreadNotificationBloc
     } else if (event is CheckNotification) {
       yield* _checkNotification(event.isLoading);
     } else if (event is ShowSelectOrUnselectAll) {
-      yield* selectOrUnselectAll(isSelect: event.isSelect ?? true);
+      yield* _selectOrUnselectAll(isSelect: event.isSelect ?? true);
     }
   }
 
@@ -78,7 +78,7 @@ class UnreadNotificationBloc
     isShowBtnAll = true;
   }
 
-  Stream<UnReadNotificationState> selectOrUnselectAll({
+  Stream<UnReadNotificationState> _selectOrUnselectAll({
     bool isSelect = true,
   }) async* {
     List<DataNotification> listS = [];
