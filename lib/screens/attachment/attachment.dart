@@ -15,7 +15,6 @@ import '../../../bloc/contract/detail_contract_bloc.dart';
 import '../../../l10n/key_text.dart';
 import '../../../src/models/model_generator/file_response.dart';
 import '../../../widgets/appbar_base.dart';
-import '../../../widgets/cupertino_loading.dart';
 import '../../../widgets/item_file.dart';
 import '../../../widgets/pick_file_image.dart';
 import '../form/widget/preview_image.dart';
@@ -310,7 +309,11 @@ class _AttachmentState extends State<Attachment> {
                         margin: EdgeInsets.only(top: 60),
                         child: Align(
                           alignment: Alignment.topCenter,
-                          child: CupertinoLoading(),
+                          child: LoadingAnimationWidget.flickr(
+                            leftDotColor: COLORS.PRIMARY_COLOR,
+                            rightDotColor: COLORS.PRIMARY_COLOR1,
+                            size: 40,
+                          ),
                         ),
                       );
                     } else if (list == []) {
