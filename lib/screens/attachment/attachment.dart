@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,7 @@ import 'package:gen_crm/src/app_const.dart';
 import 'package:gen_crm/widgets/widgets.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import '../../../../../src/src_index.dart';
 import '../../../bloc/contract/detail_contract_bloc.dart';
 import '../../../l10n/key_text.dart';
@@ -430,9 +432,17 @@ class _AttachmentState extends State<Attachment> {
                                 Radius.circular(8),
                               ),
                             ),
-                            child: Image.network(
-                              listImage[index].link ?? '',
+                            child: CachedNetworkImage(
+                              imageUrl: listImage[index].link ?? '',
                               fit: BoxFit.cover,
+                              placeholder: (context, url) =>
+                                  LoadingAnimationWidget.flickr(
+                                leftDotColor: COLORS.PRIMARY_COLOR,
+                                rightDotColor: COLORS.PRIMARY_COLOR1,
+                                size: 20,
+                              ),
+                              errorWidget: (context, url, error) =>
+                                  Icon(Icons.error),
                             ),
                           ),
                         ),
