@@ -57,6 +57,7 @@ class DioProvider {
                     requestOptions: RequestOptions(path: ''),
                     data: {
                       'code': int.tryParse(response.data['code'].toString()),
+                      'msg': response.data['msg'].toString()
                     }, // Trả về null cho dữ liệu
                   ), // Trả về dữ liệu null
                 ); // Trả về phản hồi cho người gọi
